@@ -1,0 +1,79 @@
+#!/bin/bash
+
+PGDATA="{{ postgresql_data_directory }}"
+BACKUP_DIR="{{ postgresql_backup_path }}"
+BACKUP_AGE="{{ postgresql_backup_age }}"
+BACKUP_OPTS="{{ postgresql_backup_opts }}"
+BACKUP_COMPRESSION="{{ postgresql_backup_compression }}"
+
+DATE=$(date '+%Y%m%d-%H%M')
+DB_QUERY="select datname from pg_database where not datistemplate and datallowconn order by datname;"
+
+function __age_backups() {
+    find ${BACKUP_DIR} -mtime ${BACKUP_AGE} -name ${HOSTNAME}-*.sql.gz -exec rm -f {} \;
+}
+
+function __db_backup() {
+    local __name=$1
+    if [ ! -d ${BACKUP_DIR} ]; then
+        mkdir -p ${BACKUP_DIR} || return 2
+    fi
+
+    case "$BACKUP_COMPRESSION" in
+        gzip)
+            _suffix=".gz"
+            ;;
+        bzip*)
+            _suffix=".bz2"
+            ;;
+        xz)
+            _suffix=".xz"
+            ;;
+        *)
+            _suffix=""
+            ;;
+    esac
+
+    pg_dump ${BACKUP_OPTS} ${__name} | \
+        ${BACKUP_COMPRESSION} > ${BACKUP_DIR}/${HOSTNAME}-${__name}-${DATE}.dump.${_suffix}
+}
+
+function __backup_all_dbs() {
+    local __db="postgres"
+    for __db in $(psql -At -c "${DB_QUERY}" postgres); do
+        __db_backup ${__db}
+    done
+}
+
+function __usage() {
+    cat <<EOF
+usage $0: [-h|-n <db>]
+      Script to backup MariaDB databases
+      -h        Display this message
+      -n <db>   Back up a specific database
+EOF
+}
+
+while getopts "hn:" OPT; do
+    case $OPT in
+        h)
+            __usage
+            exit 0
+            ;;
+        n)
+            NAME="${OPTARG}"
+            ;;
+        *)
+            echo "Unknown option."
+            __usage
+            exit 1
+            ;;
+    esac
+done
+
+if [ -n "${NAME}" ]; then
+    __db_backup ${NAME}
+else
+    __backup_all_dbs
+fi
+__age_backups

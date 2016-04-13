@@ -1,0 +1,6 @@
+---
+postgresql_packages:
+  - postgresql
+  - postgresql-server
+  - postgresql-contrib
+  - python-psycopg2

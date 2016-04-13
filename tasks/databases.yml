@@ -1,0 +1,34 @@
+---
+- name: ensure users are present
+  postgresql_user: >-
+    name={{ item.name }}
+    password={{ item.password }}
+    encrypted={{ item.encrypted | default(omit) }}
+    state={{ item.state | default('present') }}
+  with_items: postgresql_users
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+
+- name: ensure databases are present
+  postgresql_db: >-
+    name={{ item.name }}
+    owner={{ item.owner | default(postgresql_database_owner) }}
+    encoding={{ item.encoding | default('UTF-8') }}
+    lc_collate={{ item.lc_collate | default(postgresql_locale) }}
+    lc_ctype={{ item.lc_ctype | default(postgresql_locale) }}
+    template="{{ item.template | default('template0') }}"
+    state={{ item.state | default('present') }}
+  with_items: postgresql_databases
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+
+- name: ensure user database privileges
+  postgresql_user: >-
+    name={{ item.name }}
+    database={{ item.database | default(omit) }}
+    priv="{{ item.priv | default(omit) }}"
+    role_attr_flags="{{ item.role_attr_flags | default(omit) }}"
+    state={{ item.state | default('present') }}
+  with_items: postgresql_users
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"

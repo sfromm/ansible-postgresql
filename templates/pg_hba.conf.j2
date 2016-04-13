@@ -1,0 +1,28 @@
+# ansible managed
+# PostgreSQL Client Authentication Configuration File
+# ===================================================
+#
+# Refer to the PostgreSQL Administrator's Guide, chapter "Client
+# Authentication" for a complete description.  A short synopsis
+# follows.
+#
+# This file controls: which hosts are allowed to connect, how clients
+# are authenticated, which PostgreSQL user names they can use, which
+# databases they can access.  Records take one of these forms:
+#
+# local      DATABASE  USER  METHOD  [OPTION]
+# host       DATABASE  USER  CIDR-ADDRESS  METHOD  [OPTION]
+# hostssl    DATABASE  USER  CIDR-ADDRESS  METHOD  [OPTION]
+# hostnossl  DATABASE  USER  CIDR-ADDRESS  METHOD  [OPTION]
+
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+
+# Defaults
+{% for connection in postgresql_pg_hba_conf_default %}
+{{ connection.type }}  {{ connection.database }}  {{ connection.user }}  {{ connection.address }}  {{ connection.method }}
+{% endfor %}
+
+# Extra rules
+{% for connection in postgresql_pg_hba_conf %}
+{{ connection.type }}  {{ connection.database }}  {{ connection.user }}  {{ connection.address }}  {{ connection.method }}
+{% endfor %}

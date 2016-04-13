@@ -1,0 +1,28 @@
+---
+- name: install postgresql packages
+  yum: >-
+    name={{ item }}
+    state=installed
+  with_items: postgresql_packages
+  register: postgresql_install_packages
+
+- name: initialize postgresql if necessary
+  command: >-
+    creates={{ postgresql_data_directory }}/PG_VERSION
+    /usr/bin/postgresql-setup initdb
+  notify: restart postgresql
+
+- name: create postgresql backup path
+  file: >-
+    path={{ postgresql_backup_path }}
+    state=directory
+    owner=postgres
+    group=postgres
+    mode=0700
+
+- name: update pgdata bash_profile
+  lineinfile: >-
+    dest=/var/lib/pgsql/.bash_profile
+    regexp="^PGDATA="
+    line="PGDATA={{ postgresql_data_directory }}"
+    backup=yes

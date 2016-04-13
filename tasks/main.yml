@@ -1,0 +1,46 @@
+---
+- name: include os-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: setup-redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: template postgresql pg_hba.conf
+  template: >-
+    src=pg_hba.conf.j2
+    dest={{ postgresql_data_directory }}/pg_hba.conf
+    owner={{ postgresql_admin_user }}
+    backup=yes
+  notify: restart postgresql
+
+- name: template postgresql postgrseql.conf
+  template: >-
+    src=postgresql.conf.j2
+    dest={{ postgresql_data_directory }}/postresql.conf
+    owner={{ postgresql_admin_user }}
+    backup=yes
+  notify: restart postgresql
+
+- name: enable and start postgresql
+  service: name={{ postgresql_service_name }} enabled=yes state=started
+
+- include: databases.yml
+
+- name: deploy postgresql backup script
+  template: >-
+    src=postgresql-backup.sh.j2
+    dest=/usr/local/bin/postgresql-backup
+    owner=root
+    group=root
+    mode=0755
+  when: postgresql_do_backup
+
+- name: create cron job for backups
+  cron: >-
+    name="postgresql backups"
+    hour=6
+    minute=5
+    user="{{ postgresql_admin_user }}"
+    job="/usr/local/bin/postgresql-backup"
+    cron_file="ansible-postgresql-backup"
+  when: postgresql_do_backup
