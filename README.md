@@ -82,7 +82,7 @@ postgresql_databases:
   list may define the keys `name` (name of the database user),
   `password` (the user's password), `encrypted` (a boolean for whether
   the password is stored hashed in the database), `priv` (privileges to
-  grant user on a database), `database` (name of database privileges are
+  grant user on a database), `db` (name of database privileges are
   associated with), `role_attr_flags` (role attributes for the user),
   and `state` (defaults to `present`).  Only `name` and `password` are
   required.
