@@ -4,6 +4,7 @@
     name={{ item.name }}
     password={{ item.password }}
     encrypted={{ item.encrypted | default(omit) }}
+    role_attr_flags="{{ item.role_attr_flags | default(omit) }}"
     state={{ item.state | default('present') }}
   with_items: postgresql_users
   become: yes
@@ -27,7 +28,6 @@
     name={{ item.name }}
     db={{ item.db | default(omit) }}
     priv="{{ item.priv | default(omit) }}"
-    role_attr_flags="{{ item.role_attr_flags | default(omit) }}"
     state={{ item.state | default('present') }}
   with_items: postgresql_users
   become: yes
