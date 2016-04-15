@@ -16,10 +16,11 @@ postgresql_backup_opts: "--exclude-table-data=sessions -U postgres --create"
 postgresql_backup_compression: xz
 #
 # HBA
+postgresql_auth_method_default: "md5"
 postgresql_pg_hba_conf_default:
- - { type: local, database: all, user: "{{postgresql_admin_user}}", address: '',             method: peer  }
- - { type: host,  database: all, user: all,                         address: "127.0.0.1/32", method: ident }
- - { type: host,  database: all, user: all,                         address: "::1/128",      method: ident }
+ - { type: local, database: all, user: "{{postgresql_admin_user}}", address: '', method: peer  }
+ - { type: host,  database: all, user: all, address: "127.0.0.1/32", method: "{{ postgresql_auth_method_default }}" }
+ - { type: host,  database: all, user: all, address: "::1/128",      method: "{{ postgresql_auth_method_default }}" }
 postgresql_pg_hba_conf: []
 #
 # postgresql.conf
