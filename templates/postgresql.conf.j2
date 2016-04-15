@@ -20,7 +20,7 @@
 # server for the changes to take effect, or use "pg_ctl reload".  Some
 # parameters, which are marked below, require a server shutdown and restart to
 # take effect.
- -----------------------------
+# -----------------------------
 # PostgreSQL configuration file
 # -----------------------------
 #
@@ -79,7 +79,7 @@ unix_socket_directories = '{{ postgresql_unix_socket_directories | join(",") }}'
 unix_socket_group = '{{ postgresql_unix_socket_group }}'
 unix_socket_permissions = {{ postgresql_unix_socket_permissions }}
 bonjour = {{ 'on' if postgresql_bonjour else 'off' }}
-bonjour_name = {{ postgresql_bonjour_name }}
+bonjour_name = '{{ postgresql_bonjour_name }}'
 
 # - Security and Authentication -
 
