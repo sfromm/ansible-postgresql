@@ -55,13 +55,16 @@ documentation for
 ```
 postgresql_pg_hba_conf_default:
  - { type: local, database: all, user: "{{postgresql_admin_user}}", address: '',             method: peer  }
- - { type: host,  database: all, user: all,                         address: "127.0.0.1/32", method: ident }
- - { type: host,  database: all, user: all,                         address: "::1/128",      method: ident }
+ - { type: host,  database: all, user: all,                         address: "127.0.0.1/32", method: md5 }
+ - { type: host,  database: all, user: all,                         address: "::1/128",      method: md5 }
 ```
 * **postgresql_pg_hba_conf**: This is defined the same as
-  **postgresql_pg_hba_conf_default**.  Each item in the list must define
+  *postgresql_pg_hba_conf_default*.  Each item in the list must define
   the keys `type`, `database`, `user`, `address`, and `method`.  This
   defaults to an empty list.
+* **postgresql_auth_method_default**: Define the default auth method
+  when templating *pg_hba.conf*.  The defaults to `md5`.  This will
+  affect localhost entries for *postgresql_pg_hba_conf_default*.
 
 You can define what databases and users to create using
 `postgresql_databases` and `postgresql_users`.
