@@ -42,7 +42,7 @@ postgresql_bonjour: no
 postgresql_bonjour_name: ''
 #
 # - Security and Authentication -
-postgresql_authentication_timeout: 1m
+postgresql_authentication_timeout: 1min
 postgresql_ssl: off
 postgresql_ssl_ciphers: 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'
 postgresql_ssl_renegotiation_limit: 0
