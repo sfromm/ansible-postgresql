@@ -35,7 +35,7 @@ function __db_backup() {
     esac
 
     pg_dump ${BACKUP_OPTS} ${__name} | \
-        ${BACKUP_COMPRESSION} > ${BACKUP_DIR}/${HOSTNAME}-${__name}-${DATE}.dump.${_suffix}
+        ${BACKUP_COMPRESSION} > ${BACKUP_DIR}/${HOSTNAME}-${__name}-${DATE}.dump${_suffix}
 }
 
 function __backup_all_dbs() {
