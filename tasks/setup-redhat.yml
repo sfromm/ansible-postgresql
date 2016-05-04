@@ -3,7 +3,7 @@
   yum: >-
     name={{ item }}
     state=installed
-  with_items: postgresql_packages
+  with_items: "{{ postgresql_packages }}"
   register: postgresql_install_packages
 
 - name: update pgdata bash_profile
