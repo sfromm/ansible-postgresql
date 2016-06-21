@@ -1,5 +1,5 @@
 ---
-postgresql_packages:
+postgresql_packages_default:
   - postgresql
   - postgresql-server
   - postgresql-contrib

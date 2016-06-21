@@ -96,6 +96,10 @@ postgresql_users:
     database: example
     priv: ALL/products:ALL
 ```
+* **postgresql_packages**: The list of packages to install.  Defaults
+  are set in the appropriate *vars/<platform>.yml* file.  This enables
+  one to override.  If you choose to override, make sure to pull in the
+  python bindings.
 
 Dependencies
 ------------

@@ -5,6 +5,7 @@ postgresql_database_owner: "{{ postgresql_admin_user }}"
 postgresql_locale: "en_US.UTF-8"
 postgresql_data_directory: /var/lib/pgsql/data
 postgresql_pid_directory: /var/run/postgresql
+postgresql_packages: "{{ postgresql_packages_default }}"
 #
 postgresql_users: []
 postgresql_databases: []
