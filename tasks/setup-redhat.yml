@@ -21,6 +21,14 @@
     group=root
     mode=0644
 
+- name: create postgresql data path
+  file: >-
+    path={{ postgresql_data_directory }}
+    state=directory
+    owner=postgres
+    group=postgres
+    mode=0700
+
 - name: initialize postgresql if necessary
   command: >-
     creates={{ postgresql_data_directory }}/PG_VERSION
