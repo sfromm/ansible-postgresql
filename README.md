@@ -97,8 +97,8 @@ postgresql_databases:
 postgresql_users:
   - name: icarus
     password: poor-password
-    database: example
-    priv: ALL/products:ALL
+    db: example
+    priv: ALL
 ```
 * **postgresql_packages**: The list of packages to install.  Defaults
   are set in the appropriate *vars/<platform>.yml* file.  This enables
