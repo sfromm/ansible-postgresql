@@ -14,6 +14,17 @@
   with_items: "{{ postgresql_packages }}"
   register: postgresql_install_packages
 
+- name: get default postgresql version
+  environment:
+    LC_ALL: 'C'
+  shell: rpm -q --queryformat='%{Version}' postgresql | sed -e 's/\.[0-9]*$//g'
+  register: postgresql_rpm_version
+  changed_when: False
+
+- name: set postgresql_version fact
+  set_fact:
+    postgresql_version: "{{ postgresql_rpm_version.stdout }}"
+
 - name: update pgdata bash_profile
   lineinfile: >-
     dest={{ postgresql_base_directory }}/.bash_profile
