@@ -13,7 +13,7 @@ postgresql_databases: []
 #
 postgresql_base_directory: "{{ postgresql_base_directory_default }}"
 postgresql_conf_directory: "{{ postgresql_conf_directory_default }}"
-postgresql_data_directory: "{{ postgresql_base_directory_default }}"
+postgresql_data_directory: "{{ postgresql_data_directory_default }}"
 postgresql_backup_directory: "{{ postgresql_backup_directory_default }}"
 postgresql_backup_path: "{{ postgresql_backup_directory }}"
 postgresql_bin_directory: /usr/bin
