@@ -4,3 +4,7 @@ postgresql_packages_default:
   - postgresql-server
   - postgresql-contrib
   - python-psycopg2
+postgresql_base_directory_default: /var/lib/pgsql
+postgresql_data_directory_default: "{{ postgresql_base_directory }}/data"
+postgresql_conf_directory_default: "{{ postgresql_data_directory_default }}"
+postgresql_backup_directory_default: "{{ postgresql_base_directory_default }}/backups"

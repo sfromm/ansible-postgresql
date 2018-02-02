@@ -3,15 +3,23 @@ postgresql_service_name: postgresql
 postgresql_admin_user: postgres
 postgresql_database_owner: "{{ postgresql_admin_user }}"
 postgresql_locale: "en_US.UTF-8"
-postgresql_data_directory: /var/lib/pgsql/data
-postgresql_pid_directory: /var/run/postgresql
 postgresql_packages: "{{ postgresql_packages_default }}"
+#
+postgresql_yum_repo_url: ""
+postgresql_yum_rpm_key: ""
 #
 postgresql_users: []
 postgresql_databases: []
 #
+postgresql_base_directory: /var/lib/pgsql
+postgresql_conf_directory: "{{ postgresql_conf_directory_default }}"
+postgresql_data_directory: "{{ postgresql_base_directory_default }}"
+postgresql_backup_directory: "{{ postgresql_backup_directory_default }}"
+postgresql_backup_path: "{{ postgresql_backup_directory }}"
+postgresql_bin_directory: /usr/bin
+postgresql_pid_directory: /var/run/postgresql
+#
 postgresql_do_backup: no
-postgresql_backup_path: /var/lib/pgsql/backups
 postgresql_backup_age: 14
 postgresql_backup_opts: "--exclude-table-data=sessions -U postgres --create"
 postgresql_backup_compression: xz

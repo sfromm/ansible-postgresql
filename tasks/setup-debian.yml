@@ -1,12 +1,4 @@
 ---
-- name: install postgresql yum repository
-  package: name={{ postgresql_yum_repo_url }} state=present
-  when: postgresql_yum_repo_url is defined
-
-- name: install postgresql yum rpm key
-  rpm_key: key={{ postgresql_yum_rpm_key }} state=present
-  when: postgresql_yum_repo_url is defined
-
 - name: install postgresql packages
   package: >-
     name={{ item }}
@@ -14,20 +6,19 @@
   with_items: "{{ postgresql_packages }}"
   register: postgresql_install_packages
 
+- name: Get default PostgreSQL version
+  environment:
+    LC_ALL: 'C'
+  shell: "apt-cache policy postgresql-client | grep -E '^\\s+Candidate:\\s+' | awk '{print $2}' | cut -d+ -f1"
+  register: postgresql_apt_version
+  changed_when: False
+
 - name: update pgdata bash_profile
   lineinfile: >-
     dest={{ postgresql_base_directory }}/.bash_profile
     regexp="^PGDATA="
     line="PGDATA={{ postgresql_data_directory }}"
     backup=yes
-
-- name: template postgresql.service to override PGDATA as needed
-  template: >-
-    src=postgresql.service.j2
-    dest=/etc/systemd/system/postgresql.service
-    owner=root
-    group=root
-    mode=0644
 
 - name: create postgresql data path
   file: >-
@@ -40,7 +31,7 @@
 - name: initialize postgresql if necessary
   command: >-
     creates={{ postgresql_data_directory }}/PG_VERSION
-    {{ postgresql_bin_directory }}/postgresql-setup initdb
+    /usr/lib/postgresql/{{ postgresql_apt_version }}/bin/initdb
   notify: restart postgresql
 
 - name: create postgresql backup path

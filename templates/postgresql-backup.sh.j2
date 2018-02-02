@@ -9,6 +9,9 @@ BACKUP_COMPRESSION="{{ postgresql_backup_compression }}"
 DATE=$(date '+%Y%m%d-%H%M')
 DB_QUERY="select datname from pg_database where not datistemplate and datallowconn order by datname;"
 
+PATH="{{ postgresql_bin_directory }}:$PATH"
+export PATH
+
 function __age_backups() {
     find ${BACKUP_DIR} -mtime ${BACKUP_AGE} -name ${HOSTNAME}-*.sql.gz -exec rm -f {} \;
 }

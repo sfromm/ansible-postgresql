@@ -5,10 +5,24 @@
 - include: setup-redhat.yml
   when: ansible_os_family == "RedHat"
 
+- include: setup-debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: determine postgresql version
+  environment:
+    LC_MESSAGES: C
+  shell: >-
+    psql --version | awk '{ print $3 }' | sed -e 's/\.[0-9]*$//g'
+  register: postgresql_version
+  changed_when: no
+  failed_when: no
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+
 - name: template postgresql pg_hba.conf
   template: >-
     src=pg_hba.conf.j2
-    dest={{ postgresql_data_directory }}/pg_hba.conf
+    dest={{ postgresql_conf_directory }}/pg_hba.conf
     owner={{ postgresql_admin_user }}
     backup=yes
   notify: restart postgresql
@@ -16,7 +30,7 @@
 - name: template postgresql postgresql.conf
   template: >-
     src=postgresql.conf.j2
-    dest={{ postgresql_data_directory }}/postgresql.conf
+    dest={{ postgresql_conf_directory }}/postgresql.conf
     owner={{ postgresql_admin_user }}
     backup=yes
   notify: restart postgresql
