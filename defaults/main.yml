@@ -18,6 +18,7 @@ postgresql_backup_directory: "{{ postgresql_backup_directory_default }}"
 postgresql_backup_path: "{{ postgresql_backup_directory }}"
 postgresql_bin_directory: /usr/bin
 postgresql_pid_directory: /var/run/postgresql
+postgresql_external_pid_file: "{{ postgresql_external_pid_file_default }}"
 #
 postgresql_do_backup: no
 postgresql_backup_age: 14

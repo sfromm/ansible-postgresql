@@ -8,3 +8,4 @@ postgresql_base_directory_default: /var/lib/pgsql
 postgresql_data_directory_default: "{{ postgresql_base_directory }}/data"
 postgresql_conf_directory_default: "{{ postgresql_data_directory_default }}"
 postgresql_backup_directory_default: "{{ postgresql_base_directory_default }}/backups"
+postgresql_external_pid_file_default: "{{ postgresql_pid_directory }}/postgresql.pid"

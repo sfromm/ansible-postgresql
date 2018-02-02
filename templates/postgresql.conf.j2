@@ -60,10 +60,10 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-#data_directory = 'ConfigDir'
-#hba_file = 'ConfigDir/pg_hba.conf'
-#ident_file = 'ConfigDir/pg_ident.conf'
-#external_pid_file = ''
+data_directory = '{{ postgresql_data_directory }}'
+hba_file = '{{ postgresql_conf_directory }}/pg_hba.conf'
+ident_file = '{{ postgresql_conf_directory }}/pg_ident.conf'
+external_pid_file = '{{ postgresql_external_pid_file }}'
 
 #------------------------------------------------------------------------------
 # CONNECTIONS AND AUTHENTICATION
