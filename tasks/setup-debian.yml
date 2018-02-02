@@ -13,13 +13,6 @@
   register: postgresql_apt_version
   changed_when: False
 
-- name: update pgdata bash_profile
-  lineinfile: >-
-    dest={{ postgresql_base_directory }}/.bash_profile
-    regexp="^PGDATA="
-    line="PGDATA={{ postgresql_data_directory }}"
-    backup=yes
-
 - name: create postgresql data path
   file: >-
     path={{ postgresql_data_directory }}
