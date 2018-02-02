@@ -27,6 +27,8 @@
   command: >-
     creates="{{ postgresql_base_directory }}/{{ postgresql_apt_version.stdout }}/main/PG_VERSION"
     /usr/lib/postgresql/{{ postgresql_apt_version.stdout }}/bin/initdb
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
   notify: restart postgresql
 
 - name: create postgresql backup path
