@@ -8,17 +8,6 @@
 - include: setup-debian.yml
   when: ansible_os_family == "Debian"
 
-- name: determine postgresql version
-  environment:
-    LC_MESSAGES: C
-  shell: >-
-    psql --version | awk '{ print $3 }' | sed -e 's/\.[0-9]*$//g'
-  register: postgresql_version
-  changed_when: no
-  failed_when: no
-  become: yes
-  become_user: "{{ postgresql_admin_user }}"
-
 - name: template postgresql pg_hba.conf
   template: >-
     src=pg_hba.conf.j2

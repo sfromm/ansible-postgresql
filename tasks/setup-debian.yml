@@ -6,12 +6,16 @@
   with_items: "{{ postgresql_packages }}"
   register: postgresql_install_packages
 
-- name: Get default PostgreSQL version
+- name: get default postgresql version
   environment:
     LC_ALL: 'C'
   shell: "apt-cache policy postgresql-client | grep -E '^\\s+Candidate:\\s+' | awk '{print $2}' | cut -d+ -f1"
   register: postgresql_apt_version
   changed_when: False
+
+- name: set postgresql_version fact
+  set_fact:
+    postgresql_version: "{{ postgresql_apt_version.stdout }}"
 
 - name: create postgresql data path
   file: >-
@@ -23,10 +27,10 @@
 
 - name: initialize postgresql if necessary
   environment:
-    PGDATA: "{{ postgresql_base_directory }}/{{ postgresql_apt_version.stdout }}/main"
+    PGDATA: "{{ postgresql_base_directory }}/{{ postgresql_version }}/main"
   command: >-
-    creates="{{ postgresql_base_directory }}/{{ postgresql_apt_version.stdout }}/main/PG_VERSION"
-    /usr/lib/postgresql/{{ postgresql_apt_version.stdout }}/bin/initdb
+    creates="{{ postgresql_base_directory }}/{{ postgresql_version }}/main/PG_VERSION"
+    /usr/lib/postgresql/{{ postgresql_version }}/bin/initdb
   become: yes
   become_user: "{{ postgresql_admin_user }}"
   notify: restart postgresql
