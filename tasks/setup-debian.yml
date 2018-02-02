@@ -22,8 +22,10 @@
     mode=0700
 
 - name: initialize postgresql if necessary
+  environment:
+    PG_DATA: "{{ postgresql_base_directory }}/{{ postgresql_apt_version.stdout }}/main"
   command: >-
-    creates={{ postgresql_data_directory }}/PG_VERSION
+    creates="{{ postgresql_base_directory }}/{{ postgresql_apt_version.stdout }}/main/PG_VERSION"
     /usr/lib/postgresql/{{ postgresql_apt_version.stdout }}/bin/initdb
   notify: restart postgresql
 
