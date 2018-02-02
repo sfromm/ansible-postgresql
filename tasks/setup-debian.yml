@@ -24,7 +24,7 @@
 - name: initialize postgresql if necessary
   command: >-
     creates={{ postgresql_data_directory }}/PG_VERSION
-    /usr/lib/postgresql/{{ postgresql_apt_version }}/bin/initdb
+    /usr/lib/postgresql/{{ postgresql_apt_version.stdout }}/bin/initdb
   notify: restart postgresql
 
 - name: create postgresql backup path
