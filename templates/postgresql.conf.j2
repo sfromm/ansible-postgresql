@@ -163,7 +163,12 @@ commit_siblings = {{ postgresql_commit_siblings }}
 
 # - Checkpoints -
 
+{% if postgresql_version|float < 9.6 %}
 checkpoint_segments = {{ postgresql_checkpoint_segments }}
+{% else %}
+min_wal_size = {{ postgresql_min_wal_size }}
+max_wal_size = {{ postgresql_max_wal_size }}
+{% endif %}
 checkpoint_timeout = {{ postgresql_checkpoint_timeout }}
 checkpoint_completion_target = {{ postgresql_checkpoint_completion_target }}
 checkpoint_warning = {{ postgresql_checkpoint_warning }}
@@ -182,7 +187,11 @@ archive_timeout = {{ postgresql_archive_timeout }}
 
 max_wal_senders = {{ postgresql_max_wal_senders }}
 wal_keep_segments = {{ postgresql_wal_keep_segments }}
-replication_timeout = 60s      # in milliseconds; 0 disables
+{% if postgresql_version|float < 9.6 %}
+replication_timeout = {{ postgresql_replication_timeout }}      # in milliseconds; 0 disables
+{% else %}
+wal_sender_timeout = {{ postgresql_wal_sender_timeout }}       # in milliseconds; 0 disables
+{% endif %}
 
 # - Master Server -
 

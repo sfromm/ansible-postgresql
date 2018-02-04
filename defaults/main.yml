@@ -130,6 +130,8 @@ postgresql_commit_siblings: 5
 #
 # - Checkpoints -
 postgresql_checkpoint_segments: 3
+postgresql_min_wal_size: 80MB
+postgresql_max_wal_size: 1GB
 postgresql_checkpoint_timeout: 5min
 postgresql_checkpoint_completion_target: 0.5
 postgresql_checkpoint_warning: 30s
@@ -144,6 +146,7 @@ postgresql_archive_command: ''
 postgresql_max_wal_senders: 0
 postgresql_wal_keep_segments: 0  # in logfile segments, 16MB each; 0 disables
 postgresql_replication_timeout: 60s
+postgresql_wal_sender_timeout: 60s
 postgresql_archive_timeout: 0
 #
 # - Master Server -
