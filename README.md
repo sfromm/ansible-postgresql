@@ -74,7 +74,7 @@ postgresql_pg_hba_conf_default:
   ``` yaml
   postgresql_conf:
     - name: listen_addresses
-      value: "*"
+      value: "'*'"
   ```
 
 You can define what databases and users to create using
