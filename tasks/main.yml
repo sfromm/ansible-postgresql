@@ -16,12 +16,13 @@
     backup=yes
   notify: restart postgresql
 
-- name: template postgresql postgresql.conf
-  template: >-
-    src=postgresql.conf.j2
+- name: modify postgresql.conf
+  lineinfile: >-
     dest={{ postgresql_conf_directory }}/postgresql.conf
-    owner={{ postgresql_admin_user }}
+    regexp="^#?{{ item.name }} =.*"
+    line="{{ item.name }} = {{ item.value }}"
     backup=yes
+  with_items: "{{ postgresql_conf }}"
   notify: restart postgresql
 
 - name: enable and start postgresql

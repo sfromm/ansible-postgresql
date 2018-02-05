@@ -69,6 +69,13 @@ postgresql_pg_hba_conf_default:
 * **postgresql_auth_method_default**: Define the default auth method
   when templating *pg_hba.conf*.  The defaults to `md5`.  This will
   affect localhost entries for *postgresql_pg_hba_conf_default*.
+* **postgresql_conf**: A list of *name* and *value* dictionaries that
+  are used to update *postgresql.conf*.  Example:
+  ``` yaml
+  postgresql_conf:
+    - name: listen_addresses
+      value: "*"
+  ```
 
 You can define what databases and users to create using
 `postgresql_databases` and `postgresql_users`.
