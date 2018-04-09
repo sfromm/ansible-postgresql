@@ -2,10 +2,10 @@
 - name: include os-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- include: setup-redhat.yml
+- include_tasks: setup-redhat.yml
   when: ansible_os_family == "RedHat"
 
-- include: setup-debian.yml
+- include_tasks: setup-debian.yml
   when: ansible_os_family == "Debian"
 
 - name: template postgresql pg_hba.conf
@@ -28,7 +28,7 @@
 - name: enable and start postgresql
   service: name={{ postgresql_service_name }} enabled=yes state=started
 
-- include: databases.yml
+- include_tasks: databases.yml
 
 - name: deploy postgresql backup script
   template: >-
