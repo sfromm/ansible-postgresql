@@ -12,6 +12,7 @@
   shell: "apt-cache policy postgresql-client | grep -E '^\\s+Candidate:\\s+' | awk '{print $2}' | cut -d+ -f1"
   register: postgresql_apt_version
   changed_when: False
+  check_mode: no
 
 - name: set postgresql_version fact
   set_fact:
