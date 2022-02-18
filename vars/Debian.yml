@@ -3,7 +3,7 @@ postgresql_packages_default:
   - postgresql
   - postgresql-client
   - postgresql-contrib
-  - python-psycopg2
+  - python3-psycopg2
 postgresql_base_directory_default: /var/lib/postgresql
 postgresql_data_directory_default: "{{ postgresql_base_directory }}/{{ postgresql_version }}/main"
 postgresql_conf_directory_default: "/etc/postgresql/{{ postgresql_version }}/main"
